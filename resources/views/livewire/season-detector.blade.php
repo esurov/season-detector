@@ -81,11 +81,10 @@
             @if ($season)
                 <div class="space-y-5" wire:key="results">
                     {{-- Season Result --}}
-                    <div class="text-center py-8 rounded-xl {{ $season === 'Spring!' ? 'bg-green-50 dark:bg-green-900/30' : 'bg-blue-50 dark:bg-blue-900/30' }}">
+                    <div class="flex items-center justify-center gap-5 py-6 rounded-xl {{ $season === 'Spring!' ? 'bg-green-50 dark:bg-green-900/30' : 'bg-blue-50 dark:bg-blue-900/30' }}">
                         @if ($season === 'Spring!')
                             {{-- Spring: sun with sprouting leaf --}}
-                            <svg class="mx-auto mb-4 h-20 w-20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                {{-- Sun rays --}}
+                            <svg class="h-16 w-16 shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g stroke="#facc15" stroke-width="3" stroke-linecap="round">
                                     <line x1="50" y1="8" x2="50" y2="18" />
                                     <line x1="50" y1="62" x2="50" y2="72" />
@@ -96,7 +95,6 @@
                                     <line x1="73.7" y1="17.3" x2="66.6" y2="24.4" />
                                     <line x1="33.4" y1="55.6" x2="26.3" y2="62.7" />
                                 </g>
-                                {{-- Sun body --}}
                                 <circle cx="50" cy="40" r="16" fill="#fbbf24" />
                                 <circle cx="50" cy="40" r="16" fill="url(#sunGrad)" />
                                 <defs>
@@ -105,41 +103,30 @@
                                         <stop offset="100%" stop-color="#f59e0b" />
                                     </radialGradient>
                                 </defs>
-                                {{-- Stem --}}
                                 <path d="M50 72 Q50 82 50 92" stroke="#16a34a" stroke-width="2.5" fill="none" stroke-linecap="round" />
-                                {{-- Left leaf --}}
                                 <path d="M50 84 Q40 78 36 70 Q44 74 50 84Z" fill="#22c55e" />
-                                {{-- Right leaf --}}
                                 <path d="M50 78 Q60 72 64 64 Q56 70 50 78Z" fill="#4ade80" />
                             </svg>
                         @else
                             {{-- Winter: snowflake --}}
-                            <svg class="mx-auto mb-4 h-20 w-20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="h-16 w-16 shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    {{-- Main axes --}}
                                     <line x1="50" y1="10" x2="50" y2="90" />
                                     <line x1="15.4" y1="30" x2="84.6" y2="70" />
                                     <line x1="15.4" y1="70" x2="84.6" y2="30" />
-                                    {{-- Top branch --}}
                                     <line x1="50" y1="22" x2="42" y2="14" />
                                     <line x1="50" y1="22" x2="58" y2="14" />
-                                    {{-- Bottom branch --}}
                                     <line x1="50" y1="78" x2="42" y2="86" />
                                     <line x1="50" y1="78" x2="58" y2="86" />
-                                    {{-- Upper-right branch --}}
                                     <line x1="72.6" y1="37" x2="76" y2="27" />
                                     <line x1="72.6" y1="37" x2="82" y2="41" />
-                                    {{-- Lower-left branch --}}
                                     <line x1="27.4" y1="63" x2="24" y2="73" />
                                     <line x1="27.4" y1="63" x2="18" y2="59" />
-                                    {{-- Upper-left branch --}}
                                     <line x1="27.4" y1="37" x2="18" y2="41" />
                                     <line x1="27.4" y1="37" x2="24" y2="27" />
-                                    {{-- Lower-right branch --}}
                                     <line x1="72.6" y1="63" x2="82" y2="59" />
                                     <line x1="72.6" y1="63" x2="76" y2="73" />
                                 </g>
-                                {{-- Center diamond --}}
                                 <circle cx="50" cy="50" r="5" fill="#93c5fd" />
                             </svg>
                         @endif
@@ -202,15 +189,6 @@
                         </div>
                     </div>
 
-                    {{-- Reset --}}
-                    <div class="flex justify-center pt-2">
-                        <button
-                            x-on:click="requestLocation()"
-                            class="text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 underline cursor-pointer"
-                        >
-                            Check again
-                        </button>
-                    </div>
                 </div>
             @endif
         </div>
