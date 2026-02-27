@@ -22,11 +22,13 @@ class SeasonDetector extends Component
 
     public bool $loading = false;
 
+    public ?string $locationName = null;
+
     public ?string $error = null;
 
     public function checkSeason(float $latitude, float $longitude, WeatherService $weatherService): void
     {
-        $this->reset(['error', 'season', 'dailyTemperatures', 'averageTemperature']);
+        $this->reset(['error', 'season', 'dailyTemperatures', 'averageTemperature', 'locationName']);
 
         $this->latitude = $latitude;
         $this->longitude = $longitude;
@@ -38,6 +40,7 @@ class SeasonDetector extends Component
             $this->dailyTemperatures = $data['daily_temperatures'];
             $this->averageTemperature = $data['average_temperature'];
             $this->season = $weatherService->determineSeason($data['average_temperature']);
+            $this->locationName = $weatherService->reverseGeocode($latitude, $longitude);
         } catch (\RuntimeException $e) {
             $this->error = $e->getMessage();
         } finally {

@@ -148,9 +148,14 @@
                         </p>
                     </div>
 
-                    {{-- Coordinates --}}
-                    <div class="text-center text-sm text-slate-500 dark:text-slate-400">
-                        Coordinates: {{ number_format($latitude, 4) }}, {{ number_format($longitude, 4) }}
+                    {{-- Location --}}
+                    <div class="text-center space-y-1">
+                        @if ($locationName)
+                            <p class="text-base font-medium text-slate-700 dark:text-slate-200">{{ $locationName }}</p>
+                        @endif
+                        <p class="text-sm text-slate-400 dark:text-slate-500">
+                            {{ number_format($latitude, 4) }}, {{ number_format($longitude, 4) }}
+                        </p>
                     </div>
 
                     {{-- Average Temperature --}}
@@ -165,13 +170,33 @@
                     <div>
                         <h3 class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2">Daily temperatures</h3>
                         <div class="grid grid-cols-7 gap-2">
-                            @foreach ($dailyTemperatures as $index => $temp)
+                            @foreach ($dailyTemperatures as $index => $day)
                                 <div
                                     wire:key="temp-{{ $index }}"
-                                    class="text-center py-2 px-1 rounded-lg text-sm font-mono
-                                        {{ $temp > 7 ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400' }}"
+                                    x-data="{ open: false }"
+                                    x-on:mouseenter="open = true"
+                                    x-on:mouseleave="open = false"
+                                    class="relative text-center py-2 px-1 rounded-lg text-sm font-mono cursor-default
+                                        {{ $day['mean'] > 7 ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400' }}"
                                 >
-                                    {{ number_format($temp, 1) }}&deg;
+                                    {{ number_format($day['mean'], 1) }}&deg;
+
+                                    {{-- Tooltip --}}
+                                    <div
+                                        x-show="open"
+                                        x-cloak
+                                        x-transition.opacity.duration.150ms
+                                        class="absolute z-10 bottom-full left-1/2 -translate-x-1/2 mb-2 w-36 rounded-lg bg-slate-800 dark:bg-slate-700 text-white text-xs shadow-lg p-2.5 pointer-events-none"
+                                    >
+                                        <p class="font-semibold mb-1">{{ \Carbon\Carbon::parse($day['date'])->format('D, M j') }}</p>
+                                        @if ($day['min'] !== null && $day['max'] !== null)
+                                            <p>Min: {{ number_format($day['min'], 1) }} &deg;C</p>
+                                            <p>Max: {{ number_format($day['max'], 1) }} &deg;C</p>
+                                        @endif
+                                        <p class="text-slate-300 mt-0.5">Mean: {{ number_format($day['mean'], 1) }} &deg;C</p>
+                                        {{-- Arrow --}}
+                                        <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800 dark:border-t-slate-700"></div>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
