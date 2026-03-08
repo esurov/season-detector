@@ -24,7 +24,7 @@ class SeasonController extends Controller
             return response()->json([
                 'daily_temperatures' => $data['daily_temperatures'],
                 'average_temperature' => $data['average_temperature'],
-                'season' => $weatherService->determineSeason($data['average_temperature']),
+                'season' => $weatherService->determineSeason(array_column($data['daily_temperatures'], 'mean')),
             ]);
         } catch (\RuntimeException $e) {
             return response()->json(['error' => $e->getMessage()], 503);

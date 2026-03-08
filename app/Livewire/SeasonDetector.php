@@ -39,7 +39,7 @@ class SeasonDetector extends Component
 
             $this->dailyTemperatures = $data['daily_temperatures'];
             $this->averageTemperature = $data['average_temperature'];
-            $this->season = $weatherService->determineSeason($data['average_temperature']);
+            $this->season = $weatherService->determineSeason(array_column($data['daily_temperatures'], 'mean'));
             $this->locationName = $weatherService->reverseGeocode($latitude, $longitude);
         } catch (\RuntimeException $e) {
             $this->error = $e->getMessage();

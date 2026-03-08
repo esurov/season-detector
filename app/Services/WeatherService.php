@@ -38,9 +38,18 @@ class WeatherService
         });
     }
 
-    public function determineSeason(float $averageTemperature): string
+    /**
+     * @param  float[]  $dailyMeans
+     */
+    public function determineSeason(array $dailyMeans): string
     {
-        return $averageTemperature > self::SPRING_THRESHOLD ? 'Spring!' : 'Winter!';
+        foreach ($dailyMeans as $mean) {
+            if ($mean <= self::SPRING_THRESHOLD) {
+                return 'Winter!';
+            }
+        }
+
+        return 'Spring!';
     }
 
     public function calculateAverage(array $temperatures): float

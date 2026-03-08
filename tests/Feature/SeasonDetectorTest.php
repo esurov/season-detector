@@ -51,6 +51,22 @@ test('checkSeason sets Winter for cold temperatures', function () {
         ->assertSet('loading', false);
 });
 
+test('checkSeason sets Winter when any single day is at or below threshold', function () {
+    // Overall average is ~11.6 (above 7), but one day is 5.0 (below threshold)
+    $means = array_fill(0, 13, 12.0);
+    $means[] = 5.0;
+
+    Http::fake([
+        'api.open-meteo.com/*' => Http::response(fakeDailyResponse($means)),
+        'nominatim.openstreetmap.org/*' => Http::response(['display_name' => 'Vienna']),
+    ]);
+
+    Livewire::test(SeasonDetector::class)
+        ->call('checkSeason', 48.21, 16.37)
+        ->assertSet('season', 'Winter!')
+        ->assertSet('loading', false);
+});
+
 test('checkSeason handles API errors gracefully', function () {
     Http::fake([
         'api.open-meteo.com/*' => Http::response('Error', 500),
